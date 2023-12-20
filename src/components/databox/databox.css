@@ -1,0 +1,25 @@
+.outer-data-box {
+  margin-top: 2rem;
+  border: 2px solid red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.outer-data-box .inner-data-box {
+  border: 2px solid rgb(15, 47, 228);
+  width: 80%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+.outer-data-box .inner-data-box .data-box-note {
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  padding: 0.5rem 2rem;
+}
+.data-box-note div {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
