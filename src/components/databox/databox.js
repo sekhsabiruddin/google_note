@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 import "./databox.css";
-import { FaEdit, FaPalette, FaTrash } from "react-icons/fa";
-import { FaTimes } from "react-icons/fa";
+
 import Swal from "sweetalert";
 import Editnote from "../Editnote/editnote";
+import Note from "../Note/Note";
 
 const Databox = ({ notes }) => {
   const [localNotes, setLocalNotes] = useState([]);
   const [edit, setEdit] = useState(false);
   const [editId, setEditId] = useState();
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
-    // Use the prop notes to initialize the localNotes state
-    setLocalNotes(notes);
-  }, [notes]); // Update localNotes whenever the prop notes changes
+    console.log("Fetching data from local storage...");
+
+    const storedNotes = JSON.parse(localStorage.getItem("notes")) || [];
+    setLocalNotes(storedNotes);
+  }, [notes, edit]); // Update localNotes whenever the prop notes changes
 
   const handleEditClick = (id) => {
     setEdit(!edit);
@@ -22,7 +25,7 @@ const Databox = ({ notes }) => {
 
   const handleDeleteClick = (id) => {
     Swal({
-      title: "Are you sure?",
+      title: "Do you reallly want to delete ?",
       text: "Once deleted, you will not be able to recover this note!",
       icon: "warning",
       buttons: true,
@@ -33,7 +36,7 @@ const Databox = ({ notes }) => {
         const updatedNotes = localNotes.filter((note) => note.id !== id);
 
         // Update state and localStorage with the filtered notes
-        setLocalNotes(updatedNotes);
+        setLocalNotes([...updatedNotes]); // Use a new array reference
         localStorage.setItem("notes", JSON.stringify(updatedNotes));
 
         Swal("Poof! Your note has been deleted!", {
@@ -48,41 +51,24 @@ const Databox = ({ notes }) => {
 
   return (
     <>
-      {edit && <Editnote setEdit={setEdit} editId={editId} />}
+      {edit && (
+        <Editnote setEdit={setEdit} editId={editId} setReload={setReload} />
+      )}
+
       <div className="outer-data-box">
         <div className="inner-data-box">
           {localNotes.map((note) => (
-            <div key={note.id} className="data-box-note">
-              <h3>{note.title}</h3>
-              <p>{note.note}</p>
-              <div>
-                <i>
-                  <FaEdit
-                    style={{ color: "green" }}
-                    onClick={() => handleEditClick(note.id)}
-                  />
-                </i>
-                <i>
-                  <FaPalette
-                    style={{
-                      color:
-                        "linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet)",
-                    }}
-                  />
-                </i>
-                <i>
-                  <FaTrash
-                    style={{ color: "red" }}
-                    onClick={() => handleDeleteClick(note.id)}
-                  />
-                </i>
-              </div>
-            </div>
+            <Note
+              key={note.id}
+              handleDeleteClick={handleDeleteClick}
+              handleEditClick={handleEditClick}
+              note={note}
+              setLocalNotes={setLocalNotes}
+            />
           ))}
         </div>
       </div>
     </>
   );
 };
-
 export default Databox;

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./editnote.css";
+import Swal from "sweetalert2";
 import { FaTimes } from "react-icons/fa";
 
-const EditNote = ({ setEdit, editId }) => {
+const EditNote = ({ setEdit, editId, setReload }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
@@ -11,7 +12,7 @@ const EditNote = ({ setEdit, editId }) => {
     const fetchData = () => {
       const storedNotes = JSON.parse(localStorage.getItem("notes")) || [];
       const noteToEdit = storedNotes.find((note) => note.id === editId);
-      console.log("Nottoedit", noteToEdit);
+
       if (noteToEdit) {
         setTitle(noteToEdit.title);
         setContent(noteToEdit.note);
@@ -22,7 +23,28 @@ const EditNote = ({ setEdit, editId }) => {
   }, [editId]);
 
   const handleUpdateClick = () => {
+    // Update the note in local storage
+    const storedNotes = JSON.parse(localStorage.getItem("notes")) || [];
+    const updatedNotes = storedNotes.map((note) => {
+      if (note.id === editId) {
+        return {
+          ...note,
+          title: title,
+          note: content,
+        };
+      }
+      return note;
+    });
+
+    localStorage.setItem("notes", JSON.stringify(updatedNotes));
+
     setEdit(false);
+    Swal.fire({
+      icon: "success",
+      title: "Data updated successfully!",
+      showConfirmButton: false,
+      timer: 1500,
+    });
   };
 
   return (
@@ -30,8 +52,13 @@ const EditNote = ({ setEdit, editId }) => {
       <div className="inner-edit">
         <div className="modal-close">
           <FaTimes
-            style={{ cursor: "pointer", fontSize: "2rem", color: "red" }}
-            onClick={(e) => handleUpdateClick()}
+            style={{
+              cursor: "pointer",
+              fontSize: "2rem",
+              color: "red",
+              fontWeight: "100",
+            }}
+            onClick={() => setEdit(false)}
           />
         </div>
         <h3>Update Your task</h3>

@@ -1,0 +1,30 @@
+.color-pallate-container {
+  position: absolute;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  /* bottom: 1rem; */
+  z-index: 10;
+  min-width: 100%;
+  margin-top: 1rem;
+}
+
+.color-picker-outer {
+  padding: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.color-circle {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.color-circle:hover {
+  border: 2px solid blueviolet;
+}

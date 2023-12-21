@@ -1,12 +1,11 @@
 .outer-data-box {
   margin-top: 2rem;
-  border: 2px solid red;
+
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .outer-data-box .inner-data-box {
-  border: 2px solid rgb(15, 47, 228);
   width: 80%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));

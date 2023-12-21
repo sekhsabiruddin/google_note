@@ -17,6 +17,7 @@ const Inputfiled = () => {
       id: Date.now(),
       title: title,
       note: takenote,
+      color: "#fff",
     };
 
     setNotes((prevNotes) => [...prevNotes, newNote]);
@@ -50,7 +51,9 @@ const Inputfiled = () => {
             onChange={(e) => setTakenote(e.target.value)}
           />
 
-          <button onClick={handleAddNoteClick}>ADD</button>
+          <button onClick={handleAddNoteClick} className="addBtn">
+            ADD
+          </button>
         </div>
       </div>
       <Databox notes={notes} />
